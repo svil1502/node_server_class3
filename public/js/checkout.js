@@ -1,5 +1,13 @@
 
+function confirmDelete(name, pict){
+    alert("Удалить?");
+    if (confirm("Вы подтверждаете удаление?")) {
+        return true;
+    } else {
+        return false;
+    }
 
+}
 
 
 

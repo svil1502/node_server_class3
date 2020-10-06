@@ -5,6 +5,7 @@ var urlencodedParser = bodyParser.urlencoded({extended:false});
 var multer = require("multer");
 var path = require('path');
 var fs = require("fs"); //Модуль для работы с файловой системой
+var rimraf = require('rimraf'); //Модуль для удаления каталога
 
 const ScanDir = require('./public/js/scan.dir');
 const Config = require('./public/js/config');
@@ -76,19 +77,51 @@ app.post("/admin", function (req,res,next){
 
 app.get('/admin_tab/', function (req, res) {
 
+    let nameLevel1 = req.query.id;
+    let nameLevel2 = req.query.id2;
+    let del = req.query.del;
+    let l = req.query.l;
+    let item_key = req.query.item_key;
+    console.log(del + "-" + l);
+    console.log(scan_dir._cfg.imgdir);
+    if (del =='yes')
+    {
+        switch (l) {
+            case '1':
+                DeleteCatalogLevelOne(item_key, nameLevel1);
+                break;
+            case '2':
+                console.log(l);
+                DeleteCatalogLevelTwo(item_key,namelevel1, nameLevel2);
+                break;
+            case '3':
+
+                DeleteCatalogLevelThree(namelevel1, namelevel2, key, group, filedata, price, price_level2);
+                break;
+            default:
+                console.log("switch по умолчанию");
+        }
+    }
+
+
     scan_dir.rescanDir();
 
     firstLevel = scan_dir.firstDir();
     firstIndex = scan_dir.getIndexForName(undefined,undefined, req.query.id);
+    if (!firstIndex)
+        firstIndex = 0;
 
     secondLevel = scan_dir.secondDirForIndex(firstIndex);
     secondIndex = scan_dir.getIndexForName(firstIndex, undefined, req.query.id2);
     if (!req.query.id2)
         secondIndex = 0;
+    if (!secondIndex)
+        secondIndex = 0;
 
     thirdLevel = [];
     if (secondLevel.length !== 0)
         thirdLevel = scan_dir.thirdDirForIndex(firstIndex, secondIndex);
+
 
     res.render('admin_tab', {
             firstLevel: firstLevel,
@@ -121,7 +154,7 @@ app.get('/admin_tab/', function (req, res) {
     //     key: key
     // });
 });
-// Проверка ссылки на страницу с контактами
+
 app.get('/addLevelOne', function(req, res) {
     let l = req.query.l;
     let nameLevel1 = req.query.id;
@@ -178,6 +211,34 @@ app.post('/addLevelOne', function (req,res){
     obj = fillPane(IndexLevelOne, NameLevelOne, IndexLevelTwo, NameLevelTwo);
 
     res.redirect('admin_tab?id=' + NameLevelOne + '&id2=' + NameLevelTwo);
+
+});
+
+app.get('/editLevelOne', function(req, res) {
+    let l = req.query.l;
+    let nameLevel1 = req.query.id;
+    let nameLevel2 = req.query.id2;
+    let key = req.query.key;
+    let price_level2 = req.query.price_level2;
+
+
+
+
+    res.render('editLevelOne', {again: false, nameLevel1:nameLevel1, nameLevel2:nameLevel2, l:l, key:key, price_level2:price_level2});
+
+});
+
+app.get('/deleteLevelOne', function(req, res) {
+    let l = req.query.l;
+    let nameLevel1 = req.query.id;
+    let nameLevel2 = req.query.id2;
+    let key = req.query.key;
+    let price_level2 = req.query.price_level2;
+
+
+
+
+    res.render('deleteLevelOne', {again: false, nameLevel1:nameLevel1, nameLevel2:nameLevel2, l:l, key:key, price_level2:price_level2});
 
 });
 
@@ -298,7 +359,7 @@ function fillPane(IndexLevelOne, NameLevelOne, IndexLevelTwo, NameLevelTwo){
 
 function CreateCatalogLevelOne(key, group, filedata)
 {
-    let dir = './img/' + key + '.' + group;
+    let dir = scan_dir._cfg.imgdir + key + '.' + group;
     fs.mkdirSync(dir);
     ext = path.extname(filedata.originalname);
     let newnamepath = dir + "/" + "main" + ext;
@@ -314,7 +375,7 @@ function CreateCatalogLevelTwo(namelevel1, key, group, filedata, price)
 
     namelevel1 = namelevel1.replace(/['"«»]/g, '');
 
-    let dir = './img/' + key + '.' + namelevel1 + '/' + group + ',' + price;
+    let dir = scan_dir._cfg.imgdir + key + '.' + namelevel1 + '/' + group + ',' + price;
     console.log(dir);
     fs.mkdirSync(dir);
     ext = path.extname(filedata.originalname);
@@ -328,7 +389,7 @@ function CreateCatalogLevelThree(namelevel1, namelevel2, key, group, filedata, p
 
     namelevel1 = namelevel1.replace(/['"«»]/g, '');
 
-    let dir = './img/' + key + '.' + namelevel1 + '/' + namelevel2 + ',' + price_level2;
+    let dir = scan_dir._cfg.imgdir + key + '.' + namelevel1 + '/' + namelevel2 + ',' + price_level2;
     console.log(dir);
   //  fs.mkdirSync(dir);
     ext = path.extname(filedata.originalname);
@@ -343,6 +404,22 @@ function CopyImg(main_group, filedata, dir) {
         if (err) return console.error(err)
         console.log("success!")
     });
+}
+
+function  DeleteCatalogLevelOne(item_key, nameLevel1)
+{
+    let dir = scan_dir._cfg.imgdir + item_key + '.' + nameLevel1;
+    console.log("(item_key, nameLevel:" + item_key + "," + nameLevel1 + "," + dir);
+    rimraf.sync(dir);
+}
+
+function  DeleteCatalogLevelOne(item_key, nameLevel1, nameLevel1)
+{
+    let dir = scan_dir._cfg.imgdir + item_key + '.' + nameLevel1;
+    console.log("(item_key, nameLevel:" + item_key + "," + nameLevel1 + "," + dir);
+   // rimraf.sync(dir);
+
+
 }
 
 app.listen(7777);

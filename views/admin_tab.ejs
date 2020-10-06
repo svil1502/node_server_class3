@@ -19,6 +19,10 @@
                             <div class="col-xl-4">
                                 <div class="card mb-4">
                                     <div class="card-header">
+                                    <%
+                                     if (!firstIndex)
+                                            firstIndex = 0;
+                                    %>
                                         <input name="key" type= "hidden" value="<%=firstLevel[firstIndex].key%>" size="1">
                                         <img src="<%=firstLevel[firstIndex].link%>" style="width: 50px; border-radius: 3px;">
 
@@ -45,14 +49,14 @@
                                          <tr>
 
                                               <td><img src="<%=item.link %>" style="width: 50px; border-radius: 3px;"></td>
-                                              <td><a href="?id=<%=item.name %>" onclick="selectone('<%=item %>');"><%=item.name %></a></td>
+                                              <td><a href="?id=<%=item.name %>"><%=item.name %></a></td>
                                               <td>
-                                               <button type="button" class="btn btn-success btn-sm">
+                                               <a href="/editLevelOne?l=1&id=<%=firstLevel[firstIndex].name%>" type="button" class="btn btn-success btn-sm">
                                                <span class="glyphicon glyphicon-pencil"></span>
-                                               </button>
-                                               <button type="button" class="btn btn-secondary btn-sm">
+                                               </a>
+                                               <a href="/admin_tab?l=1&item_key=<%=item.key%>&del=yes&id=<%=item.name%>" type="button" class="btn btn-secondary btn-sm" onclick="return confirm('Уверены удалить?')">
                                                <span class="glyphicon glyphicon-minus"></span>
-                                               </button>
+                                               </a>
                                               </td>
                                             </tr>
                                            <%}); %>
@@ -91,7 +95,8 @@
                                          </table>
 
                                        <%  } else {%>
-
+                                                <% if (!secondIndex)
+                                                        secondIndex = 0; %>
                                         <img src="<%=secondLevel[secondIndex].link%>" style="width: 50px; border-radius: 3px;">
                                         <span>Второй уровень: </span>
                                         <span id="secondLevelname"><%=secondLevel[secondIndex].name%></span>
@@ -119,9 +124,9 @@
                                                                                              <button type="button" class="btn btn-success btn-sm">
                                                                                              <span class="glyphicon glyphicon-pencil"></span>
                                                                                              </button>
-                                                                                             <button type="button" class="btn btn-secondary btn-sm">
-                                                                                             <span class="glyphicon glyphicon-minus"></span>
-                                                                                             </button>
+                                               <a href="/admin_tab?l=2&item_key=<%=item.key%>&del=yes&id=<%=firstLevel[firstIndex].name%>&id2=<%=item.name%>" type="button" class="btn btn-secondary btn-sm" onclick="return confirm('Уверены удалить?')">
+                                               <span class="glyphicon glyphicon-minus"></span>
+
                                                                                             </td>
                                             </tr>
                                            <%}); %>
