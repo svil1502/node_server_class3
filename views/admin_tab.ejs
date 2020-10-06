@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Админпанель</title>
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel='stylesheet' href='/public/glyphicons-only-bootstrap/css/bootstrap.min.css' />
+      <link href="/public/css/style.css" rel="stylesheet" />
+</head>
+
+<body>
+            <main>
+                    <div class="container-fluid">
+                        <h1 class="mt-4">Админпанель</h1>
+
+                        <div class="row">
+                            <div class="col-xl-4">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <input name="key" type= "hidden" value="<%=firstLevel[firstIndex].key%>" size="1">
+                                        <img src="<%=firstLevel[firstIndex].link%>" style="width: 50px; border-radius: 3px;">
+
+                                        <%if (firstIndex === undefined)
+                                            firstIndex = 0; %>
+										      <span>Первый уровень :</span>
+                                        <span id="firstLevelname"><%=firstLevel[firstIndex].name%></span>
+                                        <a href="/addLevelOne?l=1&id=<%=firstLevel[firstIndex].name%>" class="btn-plus">
+                                         <span class="glyphicon glyphicon-plus"></span>
+
+                                       </a>
+
+                                        <table class="table table-bordered">
+                                          <thead>
+                                            <tr>
+
+                                              <th scope="col">Картинка</th>
+                                              <th scope="col">Название</th>
+                                              <th scope="col">Действия</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                          <% firstLevel.forEach(function(item){ %>
+                                         <tr>
+
+                                              <td><img src="<%=item.link %>" style="width: 50px; border-radius: 3px;"></td>
+                                              <td><a href="?id=<%=item.name %>" onclick="selectone('<%=item %>');"><%=item.name %></a></td>
+                                              <td>
+                                               <button type="button" class="btn btn-success btn-sm">
+                                               <span class="glyphicon glyphicon-pencil"></span>
+                                               </button>
+                                               <button type="button" class="btn btn-secondary btn-sm">
+                                               <span class="glyphicon glyphicon-minus"></span>
+                                               </button>
+                                              </td>
+                                            </tr>
+                                           <%}); %>
+
+                                          </tbody>
+                                        </table>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="card mb-4">
+                                     <div class="card-header">
+
+                                       <%  if (secondLevel.length === 0) {%>
+                                         <img src="<%=noImage%>" style="width: 50px; border-radius: 3px;">
+                                        <span>Второй уровень: </span>
+
+
+                                        <a href="/addLevelOne?l=2&key=<%=firstLevel[firstIndex].key%>&id=<%=firstLevel[firstIndex].name%>" class="btn-plus">
+                                                                                 <span class="glyphicon glyphicon-plus"></span>
+                                        </a>
+                                        <table class="table table-bordered">
+                                          <thead>
+                                            <tr>
+
+                                              <th scope="col">Картинка</th>
+                                              <th scope="col">Название</th>
+                                               <th scope="col">Цена</th>
+                                              <th scope="col">Действия</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                          </tbody>
+                                         </table>
+
+                                       <%  } else {%>
+
+                                        <img src="<%=secondLevel[secondIndex].link%>" style="width: 50px; border-radius: 3px;">
+                                        <span>Второй уровень: </span>
+                                        <span id="secondLevelname"><%=secondLevel[secondIndex].name%></span>
+                                        <span><%=secondLevel[secondIndex].price%></span>
+                                        <a href="/addLevelOne?l=2&key=<%=firstLevel[firstIndex].key%>&id=<%=firstLevel[firstIndex].name%>" class="btn-plus">
+                                                                                 <span class="glyphicon glyphicon-plus"></span>
+                                        </a>
+                                        <table class="table table-bordered">
+                                          <thead>
+                                            <tr>
+
+                                              <th scope="col">Картинка</th>
+                                              <th scope="col">Название</th>
+                                               <th scope="col">Цена</th>
+                                              <th scope="col">Действия</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                          <% secondLevel.forEach(function(item){ %>
+                                         <tr>
+                                              <td><img src="<%=item.link %>" style="width: 50px; border-radius: 3px;"></td>
+                                              <td><a href="?id=<%=firstLevel[firstIndex].name%>&id2=<%=item.name %>" onclick="selecttwo('<%=item.name %>');"><%=item.name %></a></td>
+                                               <td><%=item.price %></td>
+                                               <td>
+                                                                                             <button type="button" class="btn btn-success btn-sm">
+                                                                                             <span class="glyphicon glyphicon-pencil"></span>
+                                                                                             </button>
+                                                                                             <button type="button" class="btn btn-secondary btn-sm">
+                                                                                             <span class="glyphicon glyphicon-minus"></span>
+                                                                                             </button>
+                                                                                            </td>
+                                            </tr>
+                                           <%}); %>
+
+                                          </tbody>
+                                        </table>
+
+                                       <% }%>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                      <%  if (thirdLevel.length === 0) {%>
+                                                                             <img src="<%=noImage%>" style="width: 50px; border-radius: 3px;">
+                                                                            <span>Третий уровень: </span>
+
+
+                                                                            <a href="/addLevelOne?l=2&id=<%=firstLevel[firstIndex].name%>" class="btn-plus">
+                                                                                                                     <span class="glyphicon glyphicon-plus"></span>
+                                                                            </a>
+                                                                            <table class="table table-bordered">
+                                                                              <thead>
+                                                                                <tr>
+
+                                                                                  <th scope="col">Картинка</th>
+                                                                                  <th scope="col">Название</th>
+                                                                                   <th scope="col">Цена</th>
+                                                                                  <th scope="col">Действия</th>
+                                                                                </tr>
+                                                                              </thead>
+                                                                              <tbody>
+                                                                              </tbody>
+                                                                             </table>
+
+                                                                           <%  } else {%>
+
+                                        <i class="fas fa-table mr-1"></i>
+                                        Третий уровень
+                                          <a href="/addLevelOne?l=3&key=<%=firstLevel[firstIndex].key%>&id=<%=firstLevel[firstIndex].name%>&id2=<%=secondLevel[secondIndex].name%>&price_level2=<%=secondLevel[secondIndex].price%>" class="btn-plus">
+                                          <span class="glyphicon glyphicon-plus"></span>
+                                          </a>
+                                         <table class="table table-bordered">
+                                             <thead>
+                                                <tr>
+                                                    <th scope="col">Картинка</th>
+                                                    <th scope="col">Название</th>
+                                                     <th scope="col">Цена</th>
+                                                    <th scope="col">Действия</th>
+                                                </tr>
+                                             </thead>
+                                              <tbody>
+                                                    <% thirdLevel.forEach(function(item){ %>
+                                                    <tr>
+                                                    <td><img src="<%=item.link %>" style="width: 50px; border-radius: 3px;"></td>
+                                                    <td><%=item.name %></td>
+                                                     <td><%=item.price %></td>
+                                                     <td>
+                                                                                                   <button type="button" class="btn btn-success btn-sm">
+                                                                                                   <span class="glyphicon glyphicon-pencil"></span>
+                                                                                                   </button>
+                                                                                                   <button type="button" class="btn btn-secondary btn-sm">
+                                                                                                   <span class="glyphicon glyphicon-minus"></span>
+                                                                                                   </button>
+                                                                                                  </td>
+                                                    </tr>
+                                                    <%}); %>
+
+                                                    </tbody>
+                                         </table>
+                                    </div>
+ <% }%>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </main>
+
+
+ <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script src="/public/js/checkout.js"></script>
+
+</body>
+</html>

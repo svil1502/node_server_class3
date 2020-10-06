@@ -1,0 +1,18 @@
+.glyphicon-red {
+    color: red;
+}
+.btn-plus {
+    float: right;
+}
+
+tr.line {
+    background: #D9EBFF;
+    color: #007bff !important;
+    font-weight: 600;
+}
+
+tr.line a  {
+
+    color: #007bff !important;
+    font-weight: 600;
+}

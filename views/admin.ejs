@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link href="/public/css/tab.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+</head>
+<body>
+            <main>
+                    <div class="container-fluid">
+                        <h1 class="mt-4">Админпанель</h1>
+
+                        <div class="row">
+                            <div class="col-xl-4">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <img src="assets/img/main.jpg" style="width: 50px; border-radius: 3px;">
+                                        <span>Первый уровень</span>
+                                        <span>Однотонные</span>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <img src="assets/img/group.jpg" style="width: 50px; border-radius: 3px;">
+                                        <span>Второй уровень: </span>
+                                        <span>Композиция, </span>
+                                        <span>2456</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-table mr-1"></i>
+                                        Третий уровень
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </main>
+<h1>Upload file</h1>
+<form action="/admin" method="post" enctype="multipart/form-data">
+    <label>Файл</label><br>
+    <input type="file" name="filedata" /><br><br>
+    <input type="submit" value="Send" />
+</form>
+<% if (typeof filedata !== 'undefined') { %>
+ <h1><%=filedata.filename %></h1>
+<p><img src="<%=filedata.destination %>/<%=filedata.filename %>" width="150" alt=""></p>
+<% } %>
+
+</body>
+</html>
